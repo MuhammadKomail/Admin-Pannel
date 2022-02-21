@@ -1,51 +1,105 @@
-import { Grid , Container, Typography } from '@mui/material';
-import React from 'react'
-import Cards from '../components/Cards'
-import { useNavigate } from "react-router-dom";
-import Dashboard from './Dashboard';
-
-
-const products = [
-  { id: 1, description: 'Snow', Name: 'Jon' },
-  { id: 2, description: 'Lannister', Name: 'Cersei' },
-  { id: 3, description: 'Lannister', Name: 'Jaime' },
-  { id: 4, description: 'Stark', Name: 'Arya' },
-  { id: 5, description: 'Targaryen', Name: 'Daisy'  },
-  { id: 6, description: 'Melisandre', Name: 'Danil' },
-  { id: 7, description: 'Clifford', Name: 'Ferrara' },
-  { id: 8, description: 'Frances', Name: 'Rossini' },
-  { id: 9, description: 'Roxie', Name: 'Harvey' },
-];
-
+import { Grid, Container, Typography } from '@mui/material';
+import React, { useState } from 'react'
+// import Cards from '../components/Cards'
+import { useNavigate } from "react-router";
+import axios from 'axios';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
+import Modal from '@mui/material/Modal';
+import EditProduct from './EditProduct'
 
 
 const ViewProducts = () => {
+  const [cardDisplay, setCardDisplay] = useState([])
+
+
+
+  axios.get('http://localhost:5000/cards/')
+    .then(res => setCardDisplay(res.data))
+
+  function deleteEntry(id) {
+    console.log(id)
+    axios.delete('http://localhost:5000/cards/' + id)
+      .then(res => setCardDisplay(res.data))
+  }
+
   let navigate = useNavigate();
 
-  const navigateTUpload =()=>{
+  const navigateTUpload = () => {
     navigate("/Upload")
+  }
+  const navigateTEdit = () => {
+    navigate("/edit")
+  }
+  const editEntry = (data) => {
+    console.log(data)
+    navigate("/edit",{state:data._id})
   }
 
   return (
-   <>
-   <Container maxWidth="lg">
-   <Typography m={2} style={{ color: "gray", fontSize: 25 }}>Products</Typography>
+    <>
+      <Container maxWidth="lg">
+        <Typography m={2} style={{ color: "gray", fontSize: 25 }}>Products</Typography>
 
-    <Grid container spacing={3} direction="row" justify="flex-start" alignItems="flex-start">
-{products.map(productlist => {
-  const{id,description,Name} = productlist;
-  return(   
-    <Grid item xs={12} sm={6} md={4} >
-       
-    <Cards onClick={navigateTUpload} id={id} description={description} Name={Name}/>
-      </Grid>
-  )
-})}
-</Grid>
+        {cardDisplay.map(productlist => {
+          return (
+            <Box sx={{ border: "2px solid black", borderRadius: 20, padding: 5, marginBottom: 10 }} key={productlist._id}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={4} xl={3}>
+                  <div className='rightView'>
+                    <Carousel infiniteLoop useKeyboardArrows autoPlay >
+                      <div>
+                        <img alt="img" src={productlist.imageUrl1} className="imageViewProduct" />
+                      </div>
+                      <div>
+                        <img alt="img" src={productlist.imageUrl2} className="imageViewProduct" />
+                      </div>
+                    </Carousel>
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={8} xl={5}>
+                  <div className='leftView'>
+                    <div className='leftViewFirst'>
+                      {productlist.title == null ? null : `${productlist.title} `}<hr />
+                    </div>
+                    <div className='leftViewSecond'>
+                      {productlist.fabric == "" ? null : `Fabric: ${productlist.fabric} <hr />`}
+                    </div>
+                    <div className='leftViewThird'>
+                      <b> Details:</b> <br />
+                      {productlist.description}<hr />
+                    </div>
+                    <div className='leftViewFourth'>
+                      {productlist.discountPrice == null ? `PKR ${productlist.orignalPrice}` : <strike>PKR {productlist.orignalPrice}</strike>}
 
-
-</Container>
- </>
+                    </div>
+                    {productlist.discountPrice == null ? null : <div className='leftViewFifth'>As low as</div>}
+                    <div className='leftViewSixth'>
+                      {productlist.discountPrice == null ? null : <div className='leftViewSixthFirst'>{productlist.discountPrice}</div>}
+                      <div className='leftViewSixthSecond'>Availability: {productlist.availability}</div><hr />
+                      <div className='leftViewSixthSecond'>Quantity: {productlist.quantity}</div><hr />
+                      <div className='leftViewSixthSecond'>{productlist.category == "" ? null : `Category: ${productlist.category}`}</div><hr />
+                      <div className='leftViewSixthSecond'>{productlist.subCategory == "" ? null : `Sub Category: ${productlist.subCategory}`}</div><hr />
+                      <div className='leftViewSixthSecond'>{productlist.brand == "" ? null : `Brand: ${productlist.brand} `}</div>
+                      <div className='leftViewSixthSecond'>{productlist.skuNumber == "" ? null : `Sku Number: ${productlist.skuNumber} `}</div><hr />
+                      <div className='leftViewSixthSecond'>{productlist.weddingWear == "" ? null : `Wedding Wear: ${productlist.weddingWear} `}</div>
+                      <div className='leftViewSixthSecond'>{!(productlist.newArrival) ? null : `New Arrival: ${productlist.newArrival} `}</div>
+                      <div className='leftViewSixthSecond'>{productlist.collections == "" ? null : `Collections: ${productlist.collections} `}</div>
+                    </div>
+                    <div className='leftViewSeven'>
+                      <Button className='leftViewSevenBtn' sx={{ marginTop: 5 }} variant="contained" onClick={() => editEntry(productlist)} >Edit</Button>
+                      <Button className='leftViewSevenBtn' sx={{ marginTop: 5, marginLeft: 2, backgrounfColor: "red" }} onClick={() => deleteEntry(productlist._id)} variant="contained" color="error">Delete</Button>
+                    </div>
+                  </div>
+                </Grid>
+              </Grid>
+            </Box>
+          )
+        })}
+      </Container>
+    </>
   )
 }
 
