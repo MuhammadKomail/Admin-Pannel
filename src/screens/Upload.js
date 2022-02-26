@@ -52,10 +52,26 @@ const Upload = () => {
             discountPrice: value
         });
     }
+    function setdOrignalPrice(evt) {
+        const value = evt.target.value;
+        setCreateProduct({
+            ...createProduct,
+            dorignalPrice: value
+        });
+    }
+    function setdDiscountPrice(evt) {
+        const value = evt.target.value;
+        setCreateProduct({
+            ...createProduct,
+            ddiscountPrice: value
+        });
+    }
     let imgURI;
     let imgURI2;
     let imageSet;
     const [images, setimages] = useState(null)
+    const [statusImg, setStatusImg] = useState('')
+    const [upploadedSuccessFull, setUpploadingSuccessFull] = useState('')
 
     function upploadImage(image) {
         const formData = new FormData()
@@ -70,7 +86,11 @@ const Upload = () => {
                     ...createProduct,
                     imageUrl1: imgURI
                 });
-            }).catch((err) => console.log(err))   
+                setStatusImg('First Image is Succeesfully Upploaded')
+            }).catch((err) => {
+                console.log(err)
+                setStatusImg('Err in upploading image please refresh the page and re uppload the image')
+            })
     }
     function upploadImage2(image) {
         const formData = new FormData()
@@ -85,7 +105,11 @@ const Upload = () => {
                     ...createProduct,
                     imageUrl2: res.data.secure_url
                 });
-            }).catch((err) => console.log(err))   
+                setStatusImg('Second Image is Succeesfully Upploaded')
+            }).catch((err) => {
+                setStatusImg('Err in upploading image please refresh the page and re uppload the image')
+                console.log(err)
+            })
     }
     function upploadImage3(image) {
         const formData = new FormData()
@@ -100,7 +124,11 @@ const Upload = () => {
                     ...createProduct,
                     imageUrl3: res.data.secure_url
                 });
-            }).catch((err) => console.log(err))   
+                setStatusImg('Third Image is Succeesfully Upploaded')
+            }).catch((err) => {
+                setStatusImg('Err in upploading image please refresh the page and re uppload the image')
+                console.log(err)
+            })
     }
     function upploadImage4(image) {
         const formData = new FormData()
@@ -115,7 +143,11 @@ const Upload = () => {
                     ...createProduct,
                     imageUrl4: res.data.secure_url
                 });
-            }).catch((err) => console.log(err))   
+                setStatusImg('Fourth Image is Succeesfully Upploaded')
+            }).catch((err) => {
+                setStatusImg('Err in upploading image please refresh the page and re uppload the image')
+                console.log(err)
+            })
     }
 
     function setFabric(evt) {
@@ -194,7 +226,11 @@ const Upload = () => {
     function getData() {
         console.log(createProduct);
         axios.post('http://localhost:5000/cards/add', createProduct)
-            .then(res => console.log(res.data))
+            .then(res => {
+                console.log(res.data)
+                setUpploadingSuccessFull("Your Card is SuccessFully Upploaded")
+                window. location. reload()
+            })
     }
 
 
@@ -204,6 +240,8 @@ const Upload = () => {
         description: '',
         orignalPrice: '',
         discountPrice: '',
+        dorignalPrice: '',
+        ddiscountPrice: '',
         imageUrl1: '',
         imageUrl2: '',
         imageUrl3: '',
@@ -217,7 +255,7 @@ const Upload = () => {
         skuNumber: '',
         weddingWear: '',
         collections: '',
-        newArrival:""
+        newArrival: ""
     })
 
     return (
@@ -276,6 +314,27 @@ const Upload = () => {
                                     value={createProduct.discountPrice}
                                 />
                                 <TextField
+                                    label='dOrignal Price'
+                                    name="Dollar orignalPrice"
+                                    required
+                                    fullWidth
+                                    id="dorignalPrice"
+                                    sx={{ my: 2 }}
+                                    type="number"
+                                    onChange={setdOrignalPrice}
+                                    value={createProduct.dorignalPrice}
+                                />
+                                <TextField
+                                    label='Dollar Discounted Price'
+                                    name="ddiscountedPrice"
+                                    fullWidth
+                                    id="ddiscountedPrice"
+                                    sx={{ my: 2 }}
+                                    type="number"
+                                    onChange={setdDiscountPrice}
+                                    value={createProduct.ddiscountPrice}
+                                />
+                                <TextField
                                     label='Sku Number'
                                     required
                                     fullWidth
@@ -285,7 +344,7 @@ const Upload = () => {
                                 />
 
                                 <Box my={2} sx={{ marginTop: 2 }}>
-
+                                    <Typography variant="p" my={1}>{statusImg}</Typography>
                                     <Typography variant="h6" my={1}>Upload Pictures</Typography>
                                     <input
                                         type="file"
@@ -384,7 +443,7 @@ const Upload = () => {
                                 </Box>
 
 
-                                <Box sx={{ minWidth: 120,marginBottom:5 }}>
+                                <Box sx={{ minWidth: 120, marginBottom: 5 }}>
                                     <FormControl fullWidth>
                                         <InputLabel id="demo-simple-select-label">New Arrival</InputLabel>
                                         <Select
@@ -509,7 +568,7 @@ const Upload = () => {
                             variant="contained" sx={{ mt: 2, mb: 2, p: 1 }} >
                             Save
                         </Button>
-
+                        <p>{upploadedSuccessFull}</p>
                     </Container>
                 </Box>
 

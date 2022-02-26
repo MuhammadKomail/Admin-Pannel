@@ -9,7 +9,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import Modal from '@mui/material/Modal';
 import EditProduct from './EditProduct'
-
+import Loader from '../components/Loader'
 
 const ViewProducts = () => {
   const [cardDisplay, setCardDisplay] = useState([])
@@ -22,7 +22,8 @@ const ViewProducts = () => {
   function deleteEntry(id) {
     console.log(id)
     axios.delete('http://localhost:5000/cards/' + id)
-      .then(res => setCardDisplay(res.data))
+      .then(res => {setCardDisplay(res.data)})
+      window. location. reload()
   }
 
   let navigate = useNavigate();
@@ -35,14 +36,23 @@ const ViewProducts = () => {
   }
   const editEntry = (data) => {
     console.log(data)
-    navigate("/edit",{state:data._id})
+    navigate("/edit", { state: data._id })
   }
-
+  // ==================================================
+  React.useEffect(() => {
+    const token = localStorage.getItem('AdminToken')
+    const id = localStorage.getItem('AdminId')
+    if (token && id) {
+    } else {
+      navigate('/')
+    }
+  }, [])
+  // ==================================================
   return (
     <>
       <Container maxWidth="lg">
         <Typography m={2} style={{ color: "gray", fontSize: 25 }}>Products</Typography>
-
+        <div className="center">{cardDisplay.length == 0 ? <Loader /> : null}</div>
         {cardDisplay.map(productlist => {
           return (
             <Box sx={{ border: "2px solid black", borderRadius: 20, padding: 5, marginBottom: 10 }} key={productlist._id}>
@@ -65,7 +75,7 @@ const ViewProducts = () => {
                       {productlist.title == null ? null : `${productlist.title} `}<hr />
                     </div>
                     <div className='leftViewSecond'>
-                      {productlist.fabric == "" ? null : `Fabric: ${productlist.fabric} <hr />`}
+                      {productlist.fabric == "" ? null : `Fabric: ${productlist.fabric}`}
                     </div>
                     <div className='leftViewThird'>
                       <b> Details:</b> <br />

@@ -41,173 +41,193 @@ function AdminPanel(props) {
   };
   let navigate = useNavigate();
 
-  const navigateT0DashBoard =()=>{
+  const navigateT0DashBoard = () => {
     navigate("")
   }
-  const navigateToVieworder =()=>{
+  const navigateToVieworder = () => {
     navigate("ViewOrders")
   }
-  const navigateToViewproducts =()=>{
+  const navigateToViewproducts = () => {
     navigate("ViewProducts")
   }
-  const navigateToViewusers =()=>{
+  const navigateToViewusers = () => {
     navigate("ViewUsers")
   }
-  const navigateTUpload =()=>{
+  const navigateTUpload = () => {
     navigate("Upload")
   }
 
-  const navigateToRegister =()=>{
+  const navigateToRegister = () => {
     navigate("/")
   }
+  // ==================================================
+  React.useEffect(() => {
+    const token = localStorage.getItem('AdminToken')
+    const id = localStorage.getItem('AdminId')
+    if (token && id) {
+    } else {
+      navigate('/')
+    }
+  }, [])
+  // ==================================================
+  function logOut() {
+    const token = localStorage.getItem('AdminToken')
+    const id = localStorage.getItem('AdminId')
+    if (token && id) {
+      localStorage.removeItem('AdminToken')
+      localStorage.removeItem('AdminId')
+      navigate('/')
+    } else {
+      navigate('/')
+    }
+  }
 
-
-  const drawer = (
-    <div>
-      <Toolbar />
-      <Divider />
-      <Button  onClick = {navigateT0DashBoard}style={{color:"black" , textTransform:"capitalize",justifyContent:"left" }} fullWidth>  
-   <ArrowRightIcon fontSize='large' /><Typography>Dashboard</Typography>
-
-      </Button>
-      <Divider />  
-   <Button onClick = {navigateToVieworder} style={{color:"black" , textTransform:"capitalize" , justifyContent:"left"}}  fullWidth>  
-   <ArrowRightIcon fontSize='large' /><Typography>View Orders</Typography>
-      </Button> 
-      <Divider />
-      <Button onClick = {navigateToViewusers} style={{color:"black" , textTransform:"capitalize",justifyContent:"left" }} fullWidth>  
-   <ArrowRightIcon fontSize='large' /><Typography>View Users</Typography>
-
-      </Button>
-      <Divider />  
-
-      <Button onClick = {navigateToViewproducts} style={{color:"black" , textTransform:"capitalize",justifyContent:"left" }} fullWidth>  
-   <ArrowRightIcon fontSize='large' /><Typography>View Products</Typography>
-
-      </Button>
-      <Divider />  
-
-      <Button onClick = {navigateTUpload} style={{color:"black" , textTransform:"capitalize",justifyContent:"left" }} fullWidth>  
-   <ArrowRightIcon fontSize='large' /><Typography>Upload Product</Typography>
-
-      </Button>
-      <Divider />
-
-       <Button onClick = {navigateToRegister} style={{color:"black" , textTransform:"capitalize",justifyContent:"left" }} fullWidth>  
-   <ArrowRightIcon fontSize='large' /><Typography>Logout</Typography>
-
-      </Button>
-      <Divider />  
-      
-
-    </div>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
-
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar style={{background:"black"}} 
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-                 
-       <Typography variant="h6"  component="div" style={{ flex: 1 }}>
-            MY ACCOUNT
-          </Typography>
-
-          <Button style={{color:"white"}}
-        id="demo-positioned-button"
-        aria-controls={open ? 'demo-positioned-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
- <AccountCircleIcon fontSize="large" /> 
-      </Button>
-      <Menu
-        id="demo-positioned-menu"
-        aria-labelledby="demo-positioned-button"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-      >
-        <MenuItem onClick={navigateToRegister}>Logout</MenuItem>
-      </Menu>
-
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-      >
+    const drawer = (
+      <div>
         <Toolbar />
-        <Outlet/>
+        <Divider />
+        <Button onClick={navigateT0DashBoard} style={{ color: "black", textTransform: "capitalize", justifyContent: "left" }} fullWidth>
+          <ArrowRightIcon fontSize='large' /><Typography>Dashboard</Typography>
+
+        </Button>
+        <Divider />
+        <Button onClick={navigateToVieworder} style={{ color: "black", textTransform: "capitalize", justifyContent: "left" }} fullWidth>
+          <ArrowRightIcon fontSize='large' /><Typography>View Orders</Typography>
+        </Button>
+        <Divider />
+        <Button onClick={navigateToViewusers} style={{ color: "black", textTransform: "capitalize", justifyContent: "left" }} fullWidth>
+          <ArrowRightIcon fontSize='large' /><Typography>View Users</Typography>
+
+        </Button>
+        <Divider />
+
+        <Button onClick={navigateToViewproducts} style={{ color: "black", textTransform: "capitalize", justifyContent: "left" }} fullWidth>
+          <ArrowRightIcon fontSize='large' /><Typography>View Products</Typography>
+
+        </Button>
+        <Divider />
+
+        <Button onClick={navigateTUpload} style={{ color: "black", textTransform: "capitalize", justifyContent: "left" }} fullWidth>
+          <ArrowRightIcon fontSize='large' /><Typography>Upload Product</Typography>
+
+        </Button>
+        <Divider />
+
+        <Button onClick={navigateToRegister} style={{ color: "black", textTransform: "capitalize", justifyContent: "left" }} onClick={logOut} fullWidth>
+          <ArrowRightIcon fontSize='large' /><Typography>Logout</Typography>
+
+        </Button>
+        <Divider />
+
+
+      </div>
+    );
+
+    const container = window !== undefined ? () => window().document.body : undefined;
+
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar style={{ background: "black" }}
+          position="fixed"
+          sx={{
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            ml: { sm: `${drawerWidth}px` },
+          }}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+
+            <Typography variant="h6" component="div" style={{ flex: 1 }}>
+              MY ACCOUNT
+            </Typography>
+
+            <Button style={{ color: "white" }}
+              id="demo-positioned-button"
+              aria-controls={open ? 'demo-positioned-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+            >
+              <AccountCircleIcon fontSize="large" />
+            </Button>
+            <Menu
+              id="demo-positioned-menu"
+              aria-labelledby="demo-positioned-button"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+            >
+              <MenuItem onClick={navigateToRegister}>Logout</MenuItem>
+            </Menu>
+
+          </Toolbar>
+        </AppBar>
+        <Box
+          component="nav"
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+          aria-label="mailbox folders"
+        >
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            }}
+          >
+            {drawer}
+          </Drawer>
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            }}
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Box>
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        >
+          <Toolbar />
+          <Outlet />
+        </Box>
       </Box>
-    </Box>
-  );
-}
+    );
+  }
 
-AdminPanel.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
+  AdminPanel.propTypes = {
+    /**
+     * Injected by the documentation to work in an iframe.
+     * You won't need it on your project.
+     */
+    window: PropTypes.func,
+  };
 
-export default AdminPanel;
+  export default AdminPanel;

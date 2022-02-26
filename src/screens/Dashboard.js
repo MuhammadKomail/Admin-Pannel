@@ -1,8 +1,9 @@
 import { Container, Grid } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+// import jwt from 'jsonwebtoken'
 import { PieChart } from 'react-minimal-pie-chart';
 import {
   LineChart,
@@ -13,50 +14,27 @@ import {
   YAxis,
   CartesianGrid
 } from 'recharts';
-
+import { useNavigate } from 'react-router'
 import ViewOrders from './ViewOrders';
 
-const data = [
-  { name: 'Geeksforgeeks', students: 400 },
-  { name: 'Technical scripter', students: 700 },
-  { name: 'Geek-i-knack', students: 200 },
-  { name: 'Geek-o-mania', students: 1000 }
-];
 
-const pdata = [
-  {
-    name: 'MongoDb',
-    student: 11,
-    fees: 120
-  },
-  {
-    name: 'Javascript',
-    student: 15,
-    fees: 12
-  },
-  {
-    name: 'PHP',
-    student: 5,
-    fees: 10
-  },
-  {
-    name: 'Java',
-    student: 10,
-    fees: 5
-  },
-  {
-    name: 'C#',
-    student: 9,
-    fees: 4
-  },
-  {
-    name: 'C++',
-    student: 10,
-    fees: 8
-  },
-];
+
 
 const Dashboard = () => {
+  const Navigate = useNavigate()
+  // ==================================================
+  useEffect(() => {
+    const token = localStorage.getItem('AdminToken')
+    const id = localStorage.getItem('AdminId')
+    if (token && id) {
+    } else {
+      Navigate('/')
+    }
+  }, [])
+  // ==================================================
+
+  
+  // ==================================================
   return (
     <Container>
       <Grid container spacing={2}>
@@ -121,7 +99,7 @@ const Dashboard = () => {
       <Grid py={3} container spacing={2}>
         <Grid item md={8}>
           <ResponsiveContainer width="100%" >
-            <LineChart data={pdata} >
+            <LineChart>
               <CartesianGrid />
               <XAxis dataKey="name"
                 interval={'preserveStartEnd'} />

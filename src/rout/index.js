@@ -6,5 +6,11 @@ import ViewUsers from "../screens/ViewUsers";
 import AdminPanel from "../screens/AdminPanel";
 import Register from "../screens/Register"
 import EditProduct from "../screens/EditProduct"
+// import Loader from '../components/Loader';
+// import NoDataFound from '../components/NoDataFound'
 
-export { ViewOrders, ViewUsers, ViewProducts, Dashboard, Upload, AdminPanel, Register, EditProduct } 
+export {
+    ViewOrders, ViewUsers, ViewProducts, Dashboard, Upload, AdminPanel, Register, EditProduct
+    // , Loader,
+    // NoDataFound
+} 

@@ -1,64 +1,54 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import { Container, Typography, Grid } from '@mui/material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import axios from 'axios';
-
-
-const columns = [
-  // { field: 'id', headerName: 'ID', width: 70 },
-  { field: '_id', headerName: 'id', width: 50 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
-  {
-    field: 'email',
-    headerName: 'Email',
-    width: 200,
-  },
-  {
-    field: 'password',
-    headerName: 'Password',
-    width: 150,
-  }
-  // {
-  //   field: 'fullName',
-  //   headerName: 'Full name',
-  //   description: 'This column has a value getter and is not sortable.',
-  //   sortable: false,
-  //   width: 190,
-  //   valueGetter: (params) =>
-  //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-  // },
-];
+import Loader from '../components/Loader'
 
 
 
-export default function ViewUsers() {
+
+export default function BasicTable() {
   const [userData, setUserData] = React.useState()
 
   axios.get('http://localhost:5000/')
     .then(res => setUserData(res.data))
 
-
-
-    const rows =  (!userData ? [{id:"Loading",firstName:"Loading",lastName:"Loading",email:"Loading",password:"Loading"}] : userData)
-  // [
-    // { id: 1, lastName: userData == null ? 'Loading...' : (userData[counter].lastName), firstName: userData == null ? 'Loading...' : (userData[counter].firstName), Email: userData == null ? 'Loading...' : (userData[counter].email) },
-  // ];
-
   return (
-    <Container>
-      <Grid m={2}>
-        <Typography my={2} style={{ color: "gray", fontSize: 28 }}>Users</Typography>
-      </Grid>
-      <div style={{ height: 400, width: '100%' }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
-        />
-      </div>
-    </Container>
+    <>
+
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="right">Serial Number</TableCell>
+              <TableCell align="right">First Name</TableCell>
+              <TableCell align="right">Last name</TableCell>
+              <TableCell align="right">Email</TableCell>
+              <TableCell align="right">Password</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+          <div className="center">{!userData ? <Loader /> : null}</div>
+            {!userData ? null : userData.map((row, index) => (
+              <TableRow
+                key={row.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell align="right">{index + 1}</TableCell>
+                <TableCell align="right">{row.firstName}</TableCell>
+                <TableCell align="right">{row.lastName}</TableCell>
+                <TableCell align="right">{row.email}</TableCell>
+                <TableCell align="right">{row.password}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
