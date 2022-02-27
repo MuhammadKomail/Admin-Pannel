@@ -225,7 +225,7 @@ const Upload = () => {
 
     function getData() {
         console.log(createProduct);
-        axios.post('http://localhost:5000/cards/add', createProduct)
+        axios.post('https://surkhab.herokuapp.com/cards/add', createProduct)
             .then(res => {
                 console.log(res.data)
                 setUpploadingSuccessFull("Your Card is SuccessFully Upploaded")

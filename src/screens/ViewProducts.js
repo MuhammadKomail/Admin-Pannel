@@ -16,12 +16,12 @@ const ViewProducts = () => {
 
 
 
-  axios.get('http://localhost:5000/cards/')
+  axios.get('https://surkhab.herokuapp.com/cards/')
     .then(res => setCardDisplay(res.data))
 
   function deleteEntry(id) {
     console.log(id)
-    axios.delete('http://localhost:5000/cards/' + id)
+    axios.delete('https://surkhab.herokuapp.com/cards/' + id)
       .then(res => {setCardDisplay(res.data)})
       window. location. reload()
   }

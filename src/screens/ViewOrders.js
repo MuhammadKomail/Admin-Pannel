@@ -25,7 +25,7 @@ function TablePaginationActions() {
   const [statusValue, setStatusValue] = React.useState('')
   const [id, setid] = React.useState()
   React.useEffect(() => {
-    axios.get('http://localhost:5000/formData/get')
+    axios.get('https://surkhab.herokuapp.com/formData/get')
       .then(res => {
         setLoading(false)
         setFormData(res.data)
@@ -33,7 +33,7 @@ function TablePaginationActions() {
   }, [formData])
 
   React.useEffect(() => {
-    axios.get('http://localhost:5000/cards/')
+    axios.get('https://surkhab.herokuapp.com/cards/')
       .then(res => {
         setCardData(res.data)
         setLoading(false)
@@ -41,7 +41,7 @@ function TablePaginationActions() {
 
   }, [cardData])
   React.useEffect(() => {
-    axios.get('http://localhost:5000/formData/get')
+    axios.get('https://surkhab.herokuapp.com/formData/get')
       .then(res => {
         setLoading(false)
         setFormData(res.data)
@@ -49,7 +49,7 @@ function TablePaginationActions() {
   }, [])
 
   React.useEffect(() => {
-    axios.get('http://localhost:5000/cards/')
+    axios.get('https://surkhab.herokuapp.com/cards/')
       .then(res => {
         setCardData(res.data)
         setLoading(false)
@@ -58,7 +58,7 @@ function TablePaginationActions() {
 
   function deleteEntry(id) {
     // console.log(id)
-    axios.delete('http://localhost:5000/deleteformData/' + id)
+    axios.delete('https://surkhab.herokuapp.com/deleteformData/' + id)
       .then(res => { setFormData(res.data) })
     window.location.reload()
   }
@@ -81,7 +81,7 @@ function TablePaginationActions() {
   function submitStatus() {
     console.log(id)
     console.log(statusValue)
-    axios.post('http://localhost:5000/update/formData/' + id, { status: statusValue })
+    axios.post('https://surkhab.herokuapp.com/update/formData/' + id, { status: statusValue })
       .then(res => {
         window.location.reload()
       })

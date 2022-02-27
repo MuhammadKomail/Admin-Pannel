@@ -15,7 +15,7 @@ import Loader from '../components/Loader'
 export default function BasicTable() {
   const [userData, setUserData] = React.useState()
 
-  axios.get('http://localhost:5000/')
+  axios.get('https://surkhab.herokuapp.com/')
     .then(res => setUserData(res.data))
 
   return (

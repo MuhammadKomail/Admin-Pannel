@@ -231,7 +231,7 @@ const Upload = () => {
     function getData() {
         console.log(createProduct);
         let id = location.state;
-        axios.post('http://localhost:5000/cards/update/'+location.state, createProduct)
+        axios.post('https://surkhab.herokuapp.com/cards/update/'+location.state, createProduct)
             .then(res => {
                 console.log(res.data)
                 Navigate('/AdminPanel')
